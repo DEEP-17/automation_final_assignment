@@ -16,7 +16,10 @@
     "target": "ES2022",
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "types": ["node", "@playwright/test"]
+    "types": [
+      "node",
+      "@playwright/test"
+    ]
   },
   "dependencies": {
     "dotenv": "^17.4.2"

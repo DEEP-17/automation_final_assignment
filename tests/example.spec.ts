@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-test.setTimeout(60000);
 test('test travekfika', async ({ page }) => {
   test.setTimeout(60000);
   await page.goto('https://www.travelfika.com/');
@@ -18,20 +17,10 @@ test('test travekfika', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Going to?' }).click();
   await page.getByRole('textbox', { name: 'Going to?' }).fill('toronto');
   await page.locator('div').filter({ hasText: /^YYZ - Lester B\. Pearson International AirportToronto, Canada$/ }).first().click();
-  await page.getByRole('button', {
-    name: 'showing selected date'
-  }).click();
-  await expect(
-    page.locator(".rdp-root.p-3")
-  ).toBeVisible();
-  // await page.pause();
-  // await page.locator(".rdp-root.p-3").locator('button[aria-label="Thursday, June 18th, 2026"]').click(); 
-  // await page.locator('.gap-y-4.overflow-x-hidden').nth(1).locator('button[aria-label="Saturday, July 4th, 2026"]').click();  
-  // Use user-facing locators and force the click to bypass viewport/overlap constraints
-// Dispatch a programmatic click directly to the DOM node, bypassing all viewport/coordinate checks
-await page.getByRole('button', { name: 'Thursday, June 18th, 2026' }).dispatchEvent('click');
-await page.getByRole('button', { name: 'Saturday, July 4th, 2026' }).nth(1).dispatchEvent('click');
-  // await page.locator(".rdp-root.p-3").getByRole('grid', { name: 'July' }).getByLabel('Saturday, July 4th, 2026').click(); 
+  await page.getByRole('button', {name: 'showing selected date'}).click();
+  await expect(page.locator(".rdp-root.p-3")).toBeVisible();
+  await page.getByRole('button', { name: 'Thursday, June 18th, 2026' }).dispatchEvent('click');
+  await page.getByRole('button', { name: 'Saturday, July 4th, 2026' }).nth(1).dispatchEvent('click');
   await page.getByRole('button', { name: 'Economy' }).click();
   await page.getByRole('menuitem', { name: 'Business class' }).click();
   await page.getByRole('button', { name: 'Passenger' }).click();
