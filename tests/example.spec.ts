@@ -29,3 +29,123 @@ test('test travekfika', async ({ page }) => {
   await page.locator('div:nth-child(2) > .flex.items-center.justify-between > .flex.items-center > button:nth-child(3)').click();
   await page.getByRole('button', { name: 'Search' }).click();
 });
+test.only('test  flight in travekfika', async ({ page }) => {
+  test.setTimeout(600000);
+  await page.goto('https://www.travelfika.com/');
+  await page.getByRole('link', { name: 'Sign in or join using your' }).click();
+  expect(page).toHaveURL('https://www.travelfika.com/login');
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).fill('vonak40929@brixozu.com');
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('vonak40929@brixozu.coM');
+  await page.getByRole('checkbox', { name: 'Remember me' }).check();
+  await page.getByRole('button', { name: 'Sign In' }).click();
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(3000);
+  await page.getByRole('button', {name: 'Toggle menu'}).click();
+  await page.getByRole('link', { name: 'Travel' }).click();
+  // await page.pause();
+  await page.locator('.flex-grow.overflow-y-auto.custom-scrollbar').locator('a[href="/flights/search"]').first().click();
+  expect(page).toHaveURL('https://www.travelfika.com/flights/search');
+  await page.getByRole('tab', { name: 'One way' }).click();
+  await page.getByRole('textbox', { name: 'Departing from?' }).click();
+  await page.getByRole('textbox', { name: 'Departing from?' }).fill('ahme');
+  await page.locator('div').filter({ hasText: /^AMD - Sardar Vallabhbhai Patel International AirportAhmedabad, India$/ }).first().click();
+  await page.getByRole('textbox', { name: 'Going to?' }).click();
+  await page.getByRole('textbox', { name: 'Going to?' }).fill('toronto');
+  await page.locator('div').filter({ hasText: /^YYZ - Lester B\. Pearson International AirportToronto, Canada$/ }).first().click();
+  await page.locator('#date').click();
+  // await expect(page.locator(".rdp-root.p-3")).toBeVisible();
+  await page.getByRole('button', { name: 'Thursday, June 18th, 2026' }).dispatchEvent('click');
+  // await page.getByRole('button', { name: 'Saturday, July 4th, 2026' }).nth(1).dispatchEvent('click');
+  await page.getByRole('button', { name: 'Economy' }).click();
+  await page.getByRole('menuitem', { name: 'Business class' }).click();
+  await page.getByRole('button', { name: 'Passenger' }).click();
+  await page.getByRole('button').filter({ hasText: /^$/ }).nth(4).click();
+  // await page.pause();
+  await page.locator('div:nth-child(3) > .flex.items-center.justify-between > .flex.items-center > button:nth-child(3)').click();
+  await page.locator('div:nth-child(2) > .flex.items-center.justify-between > .flex.items-center > button:nth-child(3)').click();
+  await page.getByRole('button', { name: 'Search' }).click();
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(3000);
+  await page.locator('span', { hasText: '2 Stop' }).click();  
+  await page.waitForTimeout(3000);
+  // await page.waitForLoadState('networkidle');
+  const slider = page.locator('.rc-slider').first();
+  const box = await slider.boundingBox();
+  if (box) {
+      await page.mouse.move(box.x + 5,box.y + box.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(box.x + box.width * 0.3,box.y + box.height / 2,{ steps: 20 });
+      await page.mouse.up();
+  }
+  await page.waitForTimeout(3000);
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(3000);
+  // await page.pause();
+  await page.locator('[id="Air Canada"]').click();
+
+  await page.waitForLoadState('networkidle');
+  await page.getByRole('button', { name: 'Sort by : Price (low to high)' }).click();
+  await page.locator('span').filter({ hasText: 'Arrival (earliest)' }).click();
+  // await page.locator('.flex.flex-col.gap-4').;
+  await page.locator(`div.flex > section.flex > div.flex`).first().click();
+  // await page.locator(`div.space-y-3 > section.flex > div.hidden`).first().click();
+  // await page.locator('.fixed.h-full').getByRole('button', { name: 'Select', exact: true }).first().click();
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(3000);
+  await page.getByRole('button', { name: 'Continue to Checkout' }).click();
+  await page.locator(`u:has-text("Click here")`).click();
+  await page.waitForLoadState('domcontentloaded');
+  // await page.pause();
+  // page.locator(`div.mb-40 > div.flex > div.flex`).first().getByRole('button', { name: /Flight/i });
+  const flights = page.locator(`div.mb-40 > div.flex > div.flex`).first().getByRole('button', { name: /Flight/i });
+  await flights.first().waitFor({ state: 'visible' });
+  for (let i = 0; i < await flights.count(); i++) {
+    await flights.nth(i).click();
+    const noSeat = page.getByRole('heading', { name: 'Seat booking is not available for this flight', level: 4 });
+
+    if (!(await noSeat.isVisible().catch(() => false))) {
+      console.log(`Found available seat in Flight ${i + 1}`);
+      break;
+    }
+  }
+  await page.locator('label').first().click();
+  await page.getByRole('button', { name: 'Skip/Move to Checkout...' }).click();
+  await page.locator('input[name="firstName1"]').waitFor({ state: 'visible' });
+  await page.locator('input[name="firstName1"]').fill('John');
+  await page.locator('input[name="middleName1"]').fill('M');
+  await page.locator('input[name="lastName1"]').fill('Doe');
+  await page.locator('button[role="combobox"]').first().click();
+  await page.locator('input[name="country"]').pressSequentially('India');
+  await page.locator('[aria-label="Suggestions"]').filter({   hasText: 'Indonesia' }).click();
+  await page.locator('input[name="DOB1"]').click();
+  
+  await page.pause();
+});
+test('test hotel in travekfika', async ({ page }) => {
+  test.setTimeout(600000);
+  // await page.goto('https://www.travelfika.com/');
+  await page.goto('https://www.travelfika.com/');
+  await page.waitForLoadState('networkidle');
+  await page.getByRole('link', { name: 'Sign in or join using your' }).click();
+  expect(page).toHaveURL('https://www.travelfika.com/login');
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).click();
+  await page.getByRole('textbox', { name: 'Email' }).fill('vonak40929@brixozu.com');
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('vonak40929@brixozu.coM');
+  await page.getByRole('checkbox', { name: 'Remember me' }).check();
+  await page.getByRole('button', { name: 'Sign In' }).click();
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(3000);
+  await page.getByRole('button', {name: 'Toggle menu'}).click();
+  await page.getByRole('link', { name: 'Travel' }).click();
+  // await page.pause();
+  await page.locator('.flex-grow.overflow-y-auto.custom-scrollbar').locator('a[href="/hotel/search"]').first().click();
+  expect (page).toHaveURL('https://www.travelfika.com/hotel/search');
+  await page.locator('input[placeholder="What hotel you looking for?"]').click();
+  await page.locator('input[placeholder="What hotel you looking for?"]').pressSequentially('manali');
+  await page.pause();
+});
