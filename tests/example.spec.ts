@@ -105,8 +105,11 @@ test.only('test  flight in travekfika', async ({ page }) => {
   await page.getByRole('button', { name: 'Continue to Checkout' }).waitFor
 ({ state: 'visible' });
   await page.getByRole('button', { name: 'Continue to Checkout' }).click();
+
   await page.locator(`u:has-text("Click here")`).click();
   await page.waitForLoadState('domcontentloaded');
+  //seat map page
+  //https://www.travelfika.com/flights/seat-map/72383/fad6d8e055834603a96b23ecc1f596d2/%7B%22NoOfAdult%22:%7B%22Count%22:1%7D,%22NoOfChildren%22:%7B%22Count%22:0%7D,%22NoOfInfant%22:%7B%22Count%22:0%7D%7D/0
   // await page.pause();
   // page.locator(`div.mb-40 > div.flex > div.flex`).first().getByRole('button', { name: /Flight/i });
   const flights = page.locator(`div.mb-40 > div.flex > div.flex`).first().getByRole('button', { name: /Flight/i });
@@ -122,6 +125,8 @@ test.only('test  flight in travekfika', async ({ page }) => {
   }
   await page.locator('label').first().click();
   await page.getByRole('button', { name: 'Skip/Move to Checkout...' }).click();
+  //traveller info page
+  //https://www.travelfika.com/flights/travellerinfo/72383/fad6d8e055834603a96b23ecc1f596d2/%7B%22NoOfAdult%22:%7B%22Count%22:1%7D,%22NoOfChildren%22:%7B%22Count%22:0%7D,%22NoOfInfant%22:%7B%22Count%22:0%7D%7D/0
   await page.getByText('Passenger Detail #4INFANT(').waitFor({ state: 'visible' });
   // await page.locator('input[name="firstName1"]').waitFor({ state: 'visible' });
   // await page.locator('input[name="firstName1"]').fill('John');
