@@ -29,7 +29,7 @@ import { test, expect } from '@playwright/test';
 //   await page.locator('div:nth-child(2) > .flex.items-center.justify-between > .flex.items-center > button:nth-child(3)').click();
 //   await page.getByRole('button', { name: 'Search' }).click();
 // });
-test.only('test  flight in travekfika', async ({ page }) => {
+test('test  flight in travekfika', async ({ page }) => {
   test.setTimeout(600000);
   //home page
   await page.goto('https://www.travelfika.com/');
