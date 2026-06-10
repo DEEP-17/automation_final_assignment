@@ -1,34 +1,5 @@
 import { test, expect } from '@playwright/test';
-// test('test travekfika', async ({ page }) => {
-//   test.setTimeout(60000);
-//   await page.goto('https://www.travelfika.com/');
-//   await page.waitForTimeout(3000);
-//   await page.getByRole('link', { name: 'Sign in or join using your' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).click();
-//   await page.getByRole('textbox', { name: 'Email' }).fill('vonak40929@brixozu.com');
-//   await page.getByRole('textbox', { name: 'Password' }).click();
-//   await page.getByRole('textbox', { name: 'Password' }).fill('vonak40929@brixozu.coM');
-//   await page.getByRole('checkbox', { name: 'Remember me' }).check();
-//   await page.getByRole('button', { name: 'Sign In' }).click();
-//   await page.getByRole('textbox', { name: 'Departing from?' }).click();
-//   await page.getByRole('textbox', { name: 'Departing from?' }).fill('ahme');
-//   await page.locator('div').filter({ hasText: /^AMD - Sardar Vallabhbhai Patel International AirportAhmedabad, India$/ }).first().click();
-//   await page.getByRole('textbox', { name: 'Going to?' }).click();
-//   await page.getByRole('textbox', { name: 'Going to?' }).fill('toronto');
-//   await page.locator('div').filter({ hasText: /^YYZ - Lester B\. Pearson International AirportToronto, Canada$/ }).first().click();
-//   await page.getByRole('button', {name: 'showing selected date'}).click();
-//   await expect(page.locator(".rdp-root.p-3")).toBeVisible();
-//   await page.getByRole('button', { name: 'Thursday, June 18th, 2026' }).dispatchEvent('click');
-//   await page.getByRole('button', { name: 'Saturday, July 4th, 2026' }).nth(1).dispatchEvent('click');
-//   await page.getByRole('button', { name: 'Economy' }).click();
-//   await page.getByRole('menuitem', { name: 'Business class' }).click();
-//   await page.getByRole('button', { name: 'Passenger' }).click();
-//   await page.getByRole('button').filter({ hasText: /^$/ }).nth(4).click();
-//   await page.locator('div:nth-child(3) > .flex.items-center.justify-between > .flex.items-center > button:nth-child(3)').click();
-//   await page.locator('div:nth-child(2) > .flex.items-center.justify-between > .flex.items-center > button:nth-child(3)').click();
-//   await page.getByRole('button', { name: 'Search' }).click();
-// });
+
 test('test  flight in travekfika', async ({ page }) => {
   test.setTimeout(600000);
   //home page
@@ -191,10 +162,10 @@ await page.getByRole('button', {name: 'Toggle menu'}).click();
   await page.getByRole('link', { name: 'Travel' }).click();
   // await page.pause();
   await page.locator('.flex-grow.overflow-y-auto.custom-scrollbar').locator('a[href="/hotel/search"]').first().click();  await page.waitForTimeout(2000);
-  
+    // HOTEL SEARCH PAGE - Search for hotel
+
   await expect(page).toHaveURL('https://www.travelfika.com/hotel/search');
   
-  // HOTEL SEARCH PAGE - Search for hotel
   await page.getByRole('textbox', { name: 'What hotel you looking for?' }).fill('hyderabad');
   await page.waitForTimeout(2000);
   
@@ -233,6 +204,8 @@ await page.getByRole('button', {name: 'Toggle menu'}).click();
   await page.waitForTimeout(5000);
   
   // HOTEL LISTING PAGE - Wait for results to load
+  //https://www.travelfika.com/hotel/listing-stay/HYD,-Hyderabad,-India/[%7B%22rooms%22:1,%22adults%22:1,%22children%22:0,%22paxes%22:[]%7D]/1/0/1/2026-06-11/2026-06-15/0 
+
   const [hotelPage] = await Promise.all([
     page.context().waitForEvent('page'),
     page.locator('.flex.w-full.flex-col.items-start.justify-start')
@@ -242,7 +215,7 @@ await page.getByRole('button', {name: 'Toggle menu'}).click();
       .click()
   ]);
   await page.waitForTimeout(2000);
-  
+  // hotelPage=https://www.travelfika.com/hotel/Hyderabad-Hotels-Minerva-Grand-Secundrabad/106376/HYD,-Hyderabad,-India/[%7B%22rooms%22:1,%22adults%22:1,%22children%22:0,%22paxes%22:[]%7D]/1/0/2026/2026-06-11/2026-06-15
   // Click on first hotel
   // const hotelLink = page.locator('a[href*="/hotel/detail/"]').first();
   // await hotelLink.click();
@@ -263,6 +236,7 @@ await page.getByRole('button', {name: 'Toggle menu'}).click();
   }
   
   // BOOKING PAGE - Fill passenger details
+  //https://www.travelfika.com/hotel/guestinfo/20260709%7C20260710%7CW%7C235%7C12756%7CROO.2Q%7CGAR%20TIER%201%7CRO%7C%7C1~1~0%7C%7CN@07~A-SIC~22d6a~481176615~N~~~NOR~~5F0ECE835419432178108951698406AAUS0001000100010522d6a/[%7B%22rooms%22:1,%22adults%22:1,%22children%22:0,%22paxes%22:[]%7D]/0
   await hotelPage.getByRole('textbox', { name: 'Ex. John' }).fill('John');
   await hotelPage.getByRole('textbox', { name: 'Ex. Smith' }).fill('Smith');
   await hotelPage.getByRole('textbox', { name: 'Ex. 35' }).fill('35');
@@ -278,33 +252,4 @@ await page.getByRole('button', {name: 'Toggle menu'}).click();
   
   console.log('End-to-end hotel booking flow completed successfully!');
 });
-// test('test', async ({ page }) => {
-//     test.setTimeout(600000);
-//   await page.goto('https://www.travelfika.com/hotel/search');
-//   await page.getByRole('textbox', { name: 'What hotel you looking for?' }).click();
-//   await page.getByRole('textbox', { name: 'What hotel you looking for?' }).fill('hydera');
-//   await page.locator('div').filter({ hasText: /^HYD, Hyderabad, India$/ }).click();
-//   await page.getByRole('button', { name: 'Room, 1 Guest' }).click();
-//   await page.getByRole('button', { name: 'Increase adults' }).click();
-//   await page.getByRole('button', { name: 'Increase children' }).click();
-//   await page.getByRole('button', { name: 'Search' }).click();
-//   const page1Promise = page.waitForEvent('popup');
-//   await page.getByText('Minerva Grand Secundrabad See us on mapSarojini Devi Road, SecunderabadRanking').first().click();
-//   const page1 = await page1Promise;
-//   await page1.getByRole('button', { name: 'Book Now' }).click();
-//   await page1.getByRole('button', { name: '×' }).click();
-// });
-// test('temp test', async ({ page }) => {
-//   await page.goto('https://www.travelfika.com/hotel/search');
-//   await page.getByRole('textbox', { name: 'What hotel you looking for?' }).click();
-//   await page.getByRole('textbox', { name: 'What hotel you looking for?' }).fill('hyderabad');
-//   await page.locator('div').filter({ hasText: /^HYD, Hyderabad, India$/ }).click();
-//   await page.getByRole('button', { name: 'showing selected date' }).click();
-//   await page.getByRole('button', { name: 'Thursday, June 18th,' }).click();
-//   await page.getByRole('button', { name: 'Friday, June 26th,' }).click();
-//   await page.getByRole('button', { name: 'Room, 1 Guest' }).click();
-//   await page.getByRole('button', { name: 'Increase adults' }).click();
-//   await page.getByRole('button', { name: 'Increase children' }).click();
-//   await page.getByRole('button', { name: 'Search' }).click();
-// });
 
