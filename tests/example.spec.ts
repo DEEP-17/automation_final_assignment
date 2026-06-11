@@ -268,6 +268,7 @@ test('create trip flow', async ({ page }) => {
   const page1Promise = page.waitForEvent('popup');
   await page.getByRole('link', { name: 'Tripplanner saved trips' }).click();
   const page1 = await page1Promise;
+  //PAGE1=https://www.travelfika.com/tripplanner/saved-trips
   const deleteButton = page1.getByRole('button', { name: 'Delete' });
 
     try {
@@ -281,6 +282,7 @@ test('create trip flow', async ({ page }) => {
     const page2Promise = page1.waitForEvent('popup');
   await page1.getByRole('button', { name: 'Create Trip' }).click();
   const page2 = await page2Promise;
+  //PAGE2=https://www.travelfika.com/tripplanner
   // await page2.locator(`img[src="/_next/static/media/Group 369.ecd18466.svg"]`).click({force:true});
   // 1. Ensure the new tab's DOM is actually ready before we start looking for elements
   await page2.waitForLoadState('domcontentloaded');
@@ -294,6 +296,7 @@ test('create trip flow', async ({ page }) => {
   // 4. Click it. We re-introduce { force: true } here because SVGs used as close buttons 
   // often have weird transparent bounding boxes that cause Playwright's strict actionability checks to fail.
   await popupImage.click({ force: true });
+  //https://www.travelfika.com/tripplanner/personal-trip/search
   await page2.getByRole('textbox', { name: 'Where are you from?' }).click();
   await page2.getByRole('textbox', { name: 'Where are you from?' }).fill('amd');
   await page2.locator('div').filter({ hasText: /^AMD -Sardar Vallabhbhai Patel International AirportAhmedabad, India$/ }).nth(3).click();
@@ -307,6 +310,7 @@ test('create trip flow', async ({ page }) => {
   await page2.getByRole('button', { name: 'Start Planning' }).click();
   const page3 = await page3Promise;
   await page3.waitForLoadState('domcontentloaded');
+  //https://www.travelfika.com/tripplanner/personal-trip/plan/Toronto/[%7B%22locationInputValue%22:%22Ahmedabad%22,%22guestValue%22:%7B%22adults%22:2,%22children%22:0,%22infants%22:0%7D%7D]/2026-06-18/2026-07-01?originCode=AMD&destinationCode=YYZ
   await page3.getByTestId('SaveIcon').waitFor({state:'visible'});
   await page3.getByTestId('SaveIcon').click();
 });
