@@ -252,7 +252,7 @@ await page.getByRole('button', {name: 'Toggle menu'}).click();
   
   console.log('End-to-end hotel booking flow completed successfully!');
 });
-test.only('create trip flow', async ({ page }) => {
+test('create trip flow', async ({ page }) => {
   await test.setTimeout(500000);
   await page.goto('https://www.travelfika.com/');
   await page.waitForLoadState('domcontentloaded');
