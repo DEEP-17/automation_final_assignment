@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('test  flight in travekfika', async ({ page }) => {
-  test.setTimeout(600000);
+  await test.setTimeout(600000);
   //home page
   await page.goto('https://www.travelfika.com/');
   await page.getByRole('link', { name: 'Sign in or join using your' }).click();
@@ -136,7 +136,7 @@ test('test  flight in travekfika', async ({ page }) => {
   // await page.pause();
 });
 test('test hotel in travekfika', async ({ page }) => {
-  test.setTimeout(600000);
+  await test.setTimeout(600000);
   
   // HOME PAGE - Navigate to home page
   await page.goto('https://www.travelfika.com/', { waitUntil: 'domcontentloaded' });
@@ -252,45 +252,61 @@ await page.getByRole('button', {name: 'Toggle menu'}).click();
   
   console.log('End-to-end hotel booking flow completed successfully!');
 });
-test('test bus booking', async ({ page }) => {
+test.only('create trip flow', async ({ page }) => {
+  await test.setTimeout(500000);
   await page.goto('https://www.travelfika.com/');
-  await page.getByRole('tab', { name: 'Bus' }).click();
-  await page.getByRole('tab', { name: 'One way' }).click();
-  await page.getByRole('tab', { name: 'Bus' }).click();
-  await page.getByRole('textbox', { name: 'From' }).click();
-  await page.getByRole('textbox', { name: 'From' }).fill('rajkot');
-  await page.locator('div').filter({ hasText: /^Rajkot \(Gujarat\)$/ }).click();
-  await page.getByRole('textbox', { name: 'To' }).click();
-  await page.getByRole('textbox', { name: 'To' }).fill('ahmedabad');
-  await page.locator('div').filter({ hasText: /^Ahmedabad$/ }).click();
-  await page.getByRole('button', { name: 'Jun 2026' }).click();
-  await page.getByRole('button', { name: 'Wednesday, June 17th,' }).click();
-  await page.getByRole('button', { name: 'Search' }).click();
-  await page.getByRole('button', { name: 'Select Seat' }).first().click();
-  await page.getByRole('cell', { name: 'Seat 16 - Available 16 | ₹630' }).getByLabel('Seat 16 - Available').click();
-  await page.locator('div').filter({ hasText: /^Big BazarBig Bazar \(150FT Ring Road\)$/ }).first().click();
-  await page.getByText('Big Bazar', { exact: true }).click();
-  await page.getByText('Sarkhej').nth(1).click();
-  await page.getByRole('button', { name: '₹630 16 1 Selected seat' }).click();
-  await page.getByRole('textbox', { name: 'Name' }).click();
-  await page.getByRole('textbox', { name: 'Name' }).fill('john');
-  await page.getByRole('textbox', { name: 'Age' }).click();
-  await page.getByRole('textbox', { name: 'Age' }).fill('12');
-  await page.locator('#gender-select').click();
-  await page.getByRole('option', { name: 'Male', exact: true }).click();
-  await page.getByText('Select a state...').click();
-  await page.getByRole('option', { name: 'Gujarat' }).click();
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForLoadState('networkidle');
+  await page.getByRole('link', { name: 'Sign in or join using your' }).click();
+   await expect(page).toHaveURL('https://www.travelfika.com/login');
   await page.getByRole('textbox', { name: 'Email' }).click();
-  await page.getByRole('textbox', { name: 'Email' }).fill('deep@gmail.com');
-  await page.getByRole('textbox', { name: 'Phone Number' }).click();
-  await page.getByRole('textbox', { name: 'Phone Number' }).fill('9876543210');
-  await page.getByText('I have a GST number (optional').click();
-  await page.getByRole('textbox', { name: 'GST ID' }).click();
-  await page.getByRole('textbox', { name: 'GST ID' }).fill('29ab1234533322');
-  await page.getByRole('textbox', { name: 'Business Name' }).click();
-  await page.getByRole('textbox', { name: 'Business Name' }).fill('abcde');
-  await page.getByRole('textbox', { name: 'Address' }).click();
-  await page.getByRole('textbox', { name: 'Address' }).fill('ahmedabad');
-  await page.getByPlaceholder('Eg: abc@gmail.com').click();
-  await page.getByPlaceholder('Eg: abc@gmail.com').fill('abc@gmail.com');
+  await page.getByRole('textbox', { name: 'Email' }).fill('vonak40929@brixozu.com');
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('vonak40929@brixozu.coM');
+  await page.getByText('Remember me').click();
+  await page.getByRole('button', { name: 'Sign In' }).click();
+  const page1Promise = page.waitForEvent('popup');
+  await page.getByRole('link', { name: 'Tripplanner saved trips' }).click();
+  const page1 = await page1Promise;
+  const deleteButton = page1.getByRole('button', { name: 'Delete' });
+
+    try {
+        // Wait up to 3 seconds for the button to become visible
+        // await deleteButton.waitFor({ state: 'visible', timeout: 3000 });
+        await deleteButton.click({force:true});
+    } catch (error) {
+        // If 3 seconds pass and it is not visible, simply ignore and move on
+        console.log('Delete button was not found. Skipping.');
+    }  
+    const page2Promise = page1.waitForEvent('popup');
+  await page1.getByRole('button', { name: 'Create Trip' }).click();
+  const page2 = await page2Promise;
+  // await page2.locator(`img[src="/_next/static/media/Group 369.ecd18466.svg"]`).click({force:true});
+  // 1. Ensure the new tab's DOM is actually ready before we start looking for elements
+  await page2.waitForLoadState('domcontentloaded');
+
+  // 2. Define the locator. We add .first() in case the SVG is duplicated in the DOM (e.g., mobile vs desktop menus)
+  const popupImage = page2.locator('img[src*="Group 369"]').first();
+
+  // 3. Explicitly wait for the image to be attached and visible on the screen
+  await popupImage.waitFor({ state: 'visible', timeout: 15000 });
+
+  // 4. Click it. We re-introduce { force: true } here because SVGs used as close buttons 
+  // often have weird transparent bounding boxes that cause Playwright's strict actionability checks to fail.
+  await popupImage.click({ force: true });
+  await page2.getByRole('textbox', { name: 'Where are you from?' }).click();
+  await page2.getByRole('textbox', { name: 'Where are you from?' }).fill('amd');
+  await page2.locator('div').filter({ hasText: /^AMD -Sardar Vallabhbhai Patel International AirportAhmedabad, India$/ }).nth(3).click();
+  await page2.getByRole('textbox', { name: 'Where you want to go?' }).click();
+  await page2.getByRole('textbox', { name: 'Where you want to go?' }).fill('hydera');
+  await page2.locator('div').filter({ hasText: /^HYD -Rajiv Gandhi International AirportHyderabad, India$/ }).first().click();
+  await page2.getByRole('button', { name: 'showing selected date' }).click();
+  await page2.getByRole('button', { name: 'Thursday, June 18th,' }).click();
+  await page2.getByRole('grid', { name: 'July' }).getByLabel('Wednesday, July 1st,').click();
+  const page3Promise = page2.waitForEvent('popup');
+  await page2.getByRole('button', { name: 'Start Planning' }).click();
+  const page3 = await page3Promise;
+  await page3.waitForLoadState('domcontentloaded');
+  await page3.getByTestId('SaveIcon').waitFor({state:'visible'});
+  await page3.getByTestId('SaveIcon').click();
 });

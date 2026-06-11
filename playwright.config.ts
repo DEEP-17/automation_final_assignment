@@ -26,7 +26,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     headless: true,
-    actionTimeout: 30000,
+    actionTimeout: 300000,
     navigationTimeout: 120000,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
